@@ -1,0 +1,15 @@
+The Names of the images already contain all relevant information. 
+Here is how they are interpreted:
+
+The first number is the beginning of the timespan of the resolutions.
+The second number is the end of the timespan of the resoultions. This end itself is excluded.
+The country is the country from whose perspective we define voting similarity.
+The last property references the subject of resolutions which are taken into consideration.
+
+        all -> all resultions were taken (even those which are not labeled)
+        co -> colonialism
+        di -> disarmament
+        ec -> economic development
+        hr -> human rights
+        me -> israeli-palestinian conflict
+        nu -> nuclear disarmament
