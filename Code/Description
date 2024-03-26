@@ -1,0 +1,18 @@
+UNGA similarity #3.py
+
+This code is the heart of this project. 
+Its the tool that provides a graphical userinterface to presort the resolution dataframe according to three parameters (timespan, country, subjects).
+
+calculate_network.py
+
+This function doesnt contain a graphical userinterface. It produces a total of 193 csv files listing all 193 countries and their similarity score.
+This function also allows for the selction of subjects and timespan, but offers a more holistic cross country view compared to the single country perspective of the UNGA similarity #3.py
+
+fix_csv.py
+
+This function cleans the original Harvard dataset by removing countries which have been entirely absorbed by their successors and removes minor irregularities to allow for efficient parsing.
+If you want to test the original Harvard dataset, you first need to clean it with this program.
+
+First100Resoultions_1946-1948.csv
+
+This is a sample dataset already correctly formatted so that it can be fed to the UNGA similarity #3.py Code to test the tool without the large harvard dataset.
