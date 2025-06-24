@@ -1,7 +1,7 @@
 # **Mapping UNGA Voting Alliances**
 
 **Explore the interactive tool here:**  
-🌐 [https://pigeon-effect.github.io/Mapping-UNGA-Voting-Alliances/](https://pigeon-effect.github.io/Mapping-UNGA-Voting-Alliances/)
+[https://pigeon-effect.github.io/Mapping-UNGA-Voting-Alliances/](https://pigeon-effect.github.io/Mapping-UNGA-Voting-Alliances/)
 
 This project analyzes alliance structures in the United Nations General Assembly (UNGA) based on voting coincidences between 1946 and 2024. The interactive dashboard allows users to examine geopolitical clusters and bilateral alignments from the perspective of any member state.
 
@@ -12,7 +12,7 @@ By computing custom co-voting similarity indices the project aims to uncover dee
 
 ## **Key Features and Methodology**
 
-### 🎛️ **Interactive Filtering Tool**
+### **Interactive Filtering Tool**
 
 As voting similarity depends strongly on context and agenda, we introduce a filtering tool that allows users to customize the analysis along three axes:
 
@@ -24,7 +24,7 @@ The tool is implemented in **Dash** and visualized with **Plotly**.
 
 ---
 
-### 🔧 **Data Cleaning**
+### **Data Cleaning**
 
 The dataset required several preprocessing steps to handle:
 - Historical name changes (e.g., Yugoslavia, Sudan/South Sudan)
@@ -35,7 +35,7 @@ The cleaned dataset and code used for preprocessing are included in this reposit
 
 ---
 
-### 📈 **Similarity Calculation**
+### **Similarity Calculation**
 
 The similarity between two countries is computed per resolution using a scoring system:
 
@@ -50,28 +50,28 @@ These values are summed over all shared votes and normalized by the number of co
 
 ## **Visual Results**
 
-### 📌 Landing Page
+### Landing Page
 A screenshot of the interactive dashboard entry point.
 
 ![Landing Page](Results/Website/Landing%20Page.png)
 
 ---
 
-### 🗺️ World Map of Voting Clusters
+### World Map of Voting Clusters
 A choropleth map showing UN members colored by their voting alignment cluster.
 
 ![World Map](Results/Website/World%20Map.png)
 
 ---
 
-### 🧮 Coincidence Table
+### Coincidence Table
 A matrix showing average similarity between clusters.
 
 ![Coincidence Table](Results/Website/Coincidence%20Table.png)
 
 ---
 
-### 🔗 Network Graph of Alliances
+### Network Graph of Alliances
 A Gephi-rendered network graph of bilateral voting similarities.
 
 ![Network Graph](Results/Website/Network%20Graph.png)
