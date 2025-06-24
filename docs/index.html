@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UNGA Voting Viewer</title>
+  <link rel="stylesheet" href="static/style.css">
+  <script src="static/d3.v5.min.js"></script>
+  <script src="static/d3-scale-chromatic.v1.min.js"></script>
+  <script src="static/d3-geo-projection.v2.min.js"></script>
+  <script src="static/showSection.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.0/math.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simple-statistics@7.8.4/dist/simple-statistics.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.7.0/simple-statistics.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+
+</head>
+<body>
+
+<!-- Landing Page for Time Period and Subject Selection -->
+<div id="landingPage" class="section active" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: 'Lucida Console', Monaco, monospace">
+  <h1>Select Time Period and Subjects</h1>
+
+  <div style="margin: 20px; width: 80%; text-align: center">
+    <div id="timePeriodSlider" style="width: 100%;"></div>
+    <div style="margin-top: 30px;">
+      <span id="startYear">1946</span> - <span id="endYear">2024</span>
+    </div>
+  </div>
+
+  <!-- Subject Buttons -->
+  <div id="subjectButtons" style="margin: 20px; display: flex; gap: 10px;">
+    <button id="allResolutionsBtn" class="subject-btn" data-subject="All Resolutions">All Resolutions</button>
+    <button class="subject-btn" data-subject="Disarmament">Disarmament</button>
+    <button class="subject-btn" data-subject="Nuclear Disarmament">Nuclear Disarmament</button>
+    <button class="subject-btn" data-subject="Middle East">Middle East</button>
+    <button class="subject-btn" data-subject="Economic Development">Economic Development</button>
+    <button class="subject-btn" data-subject="Human Rights">Human Rights</button>
+    <button class="subject-btn" data-subject="Environment">Environment</button>
+  </div>
+
+  <!-- Run Button -->
+  <button id="runBtn">Run</button>
+
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" style="display: none; flex-direction: column; align-items: center; justify-content: center;">
+    <div class="spinner"></div>
+    <p>Calculating Voting Coincidences... Please wait.</p>
+  </div>
+
+  <!-- Include the landingPage.js script here -->
+  <script src="static/landingPage.js" defer></script>
+</div>
+
+
+
+<!-- Navigation buttons -->
+<div class="nav" style="display: none;">
+  <button id="worldMapBtn" class="active" onclick="showSection('worldMap')">World Map</button>
+  <button id="coincidenceTableBtn" onclick="showSection('coincidenceTable')">Coincidence Table</button>
+  <button id="networkGraphBtn" onclick="showSection('networkGraph')">Network Graph</button>
+</div>
+
+<!-- Back to Landing Page Button (initially hidden) -->
+<button id="backToLandingPageBtn" onclick="showLandingPage()" style="display: none;">
+  <img src="static/buttonSVGs/WhiteGearSVG.svg" alt="Settings">
+</button>
+
+<!-- World Map section -->
+<div id="worldMap" class="section" style="display: none;">
+  <div id="selectedCountryInfo" class="selected-country-info">
+    <div class="flag-name-container">
+      <img class="country-flag" src="" alt="Country Flag">
+      <span class="info-value"></span>
+    </div>
+  </div>
+  <div id="allyEnemyTable" class="ally-enemy-table" style="display: none;">
+    <h2 class="table-title" style="text-align: center">Allies & Adversaries</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Coincidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Table rows will be dynamically populated -->
+      </tbody>
+    </table>
+    <button id="collapseAlliesAndAdverseriesTableButton" class="toggle-table-button" onclick="toggleAlliesAndAdverseriesTable()">-</button>
+  </div>
+  <div id="formalAllianceTable" class="formal-alliance-table", style="display: none;">
+  <h2 class="table-title" style="text-align: center">Formal Alliances</h2>
+    <div style="text-align: center">(as of 2024-09-01)<br><br></div>
+  <table>
+    <thead>
+      <tr>
+        <th>Alliance</th>
+        <th>Internal Coincidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Table rows will be dynamically populated -->
+    </tbody>
+  </table>
+  <button id="collapseFormalAllianceButton" class="toggle-table-button" onclick="toggleFormalAllianceTable()">-</button>
+  </div>
+  <button id="expandAlliesAndAdverseriesButton" class="toggle-table-button" onclick="toggleAlliesAndAdverseriesTable()">
+    <img src="static/buttonSVGs/thumbsUpAndDownSVG.svg" alt="Expand Table" class="button-icon">
+  </button>  <svg></svg>
+  <button id="expandFormalAllianceButton" class="toggle-formal-alliance-button" onclick="toggleFormalAllianceTable()">
+  <img src="static/buttonSVGs/ContractSVG.svg" alt="Expand Formal Alliance Table" class="button-icon">
+  </button>
+  <div id="tooltipWorldMap" class="tooltipWorldMap"></div>
+  <script src="static/worldMap.js" defer></script>
+</div>
+
+
+<!-- Coincidence Table section -->
+<div id="coincidenceTable" class="section" style="display: none; justify-content: center; align-content: center; height: 100%; text-align: center;">
+  <!-- Search bar for selecting a country -->
+  <div id="searchBarContainer" style="position: absolute; top: 20px; left: 20px; z-index: 1000;">
+    <input type="text" id="countrySearch" placeholder="   Select a country..." style="padding: 5px; font-size: 14px; width: 200px;">
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.7.0/simple-statistics.min.js"></script>
+  <script src="static/coincidenceTable.js" defer></script>
+</div>
+
+<!-- Network Graph section -->
+<div id="networkGraph" class="section" style="display: none;">
+  <svg></svg>
+  <div id="tooltipNetworkGraph" class="tooltipNetworkGraph"></div>
+
+  <!-- Parameter selection controls container -->
+  <div id="parameterControls" class="parameterControls">
+    <div class="parameterBox">
+      <label for="edgeWeightSlider">Edge Weight Threshold:</label>
+      <input type="range" id="edgeWeightSlider" min="0" max="1" step="0.01" value="0.5">
+      <span id="edgeWeightValue">0.5</span>
+    </div>
+    <!-- space for more user input for params -->
+  </div>
+  <script src="static/networkGraph.js" defer></script>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,460 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: beige;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  max-width: 600px;
+}
+
+.nav button {
+  background-color: grey;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-align: center;
+  flex: 1;
+  max-width: 200px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 16px;
+}
+
+.nav button:not(:last-child) {
+  border-right: 2px solid white;
+}
+
+.nav button.active {
+  background-color: black;
+}
+
+.nav button:hover {
+  background-color: #444444;
+}
+
+.section {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: transparent;
+}
+
+.section.active {
+  display: block;
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0; /* Ensure the SVG is the lowest layer */
+}
+
+.tooltipWorldMap,
+.tooltipCoincidenceTable {
+  position: absolute;
+  z-index: 20; /* Ensure tooltip is above the map */
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  pointer-events: none;
+  visibility: visible;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+.tooltipNetworkGraph {
+  position: absolute;
+  pointer-events: none;
+  visibility: hidden; /* Start hidden, revealed on hover */
+  z-index: 1000;
+  padding: 8px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+
+
+.legend {
+  width: 100px;
+  height: 420px; /* Adjust height */
+  position: absolute;
+  top: 200px;
+  left: 1850px;
+  z-index: 1000;
+  background-color: transparent;
+  pointer-events: none;
+}
+
+
+.legend rect {
+  width: 35px;
+  height: 300px;
+  rx: 12px;
+  ry: 12px;
+  fill: url(#gradient);
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.legend .axis text {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+
+.legend .domain {
+  display: none;
+}
+
+.selected-country-info {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  background: transparent;
+  padding: 5px;
+  font-family: "Lucida Console", Monaco, monospace;
+  display: flex;
+  align-items: center;
+  z-index: 1100; /* Increase z-index to ensure it's above other elements */
+}
+
+.country-flag {
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Maintain square aspect ratio */
+  border: 1px solid black; /* Add black border */
+  border-radius: 50%; /* Make the border circular */
+  object-fit: cover; /* Maintain aspect ratio and cover entire space */
+  margin-right: 10px; /* Adjust spacing between flag and country name */
+  margin-left: 20px;
+}
+
+.flag-name-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+/* CSS for the ally-enemy table */
+.ally-enemy-table {
+  position: absolute;
+  top: 150px; /* Position it 20px from the top */
+  left: 30px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  width: auto;
+  max-height: calc(100vh - 250px); /* Set max height to fit within the viewport */
+  overflow-y: auto;
+  z-index: 1200;
+  font-family: "Lucida Console", Monaco, monospace;
+  display: none;
+}
+
+.ally-enemy-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ally-enemy-table th, .ally-enemy-table td {
+  padding: 3px;
+  text-align: left;
+  white-space: nowrap; /* Prevent line breaks */
+}
+
+.ally-enemy-table th {
+  border-bottom: 1px solid black;
+}
+
+.ally-enemy-table .ellipsis-row {
+  text-align: center;
+}
+
+.ally-enemy-table.collapsed {
+  display: none; /* Hide the table when collapsed */
+}
+
+.ally-enemy-table .coincidence-number {
+  text-align: right;
+}
+
+.table-wrapper {
+  position: relative;
+  overflow: hidden; /* Ensure overflow is hidden */
+}
+
+.collapse-button {
+  position: absolute;
+  top: 50%; /* Position vertically in the middle of the table */
+  right: -30px; /* Position it outside the table */
+  background-color: grey;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transform: translateY(-50%); /* Adjust for the vertical center */
+}
+
+
+#expandAlliesAndAdverseriesButton {
+  position: absolute;
+  top: 200px;
+  left: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+  font-size: 18px;
+  z-index: 110;
+}
+
+.button-icon {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  object-fit: contain; /* Preserve aspect ratio */
+}
+
+.formal-alliance-table {
+  position: absolute;
+  top: 150px; /* Adjust as necessary */
+  left: 30px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  width: auto;
+  max-height: calc(100vh - 150px); /* Adjust as necessary */
+  overflow-y: auto;
+  z-index: 1200;
+  font-family: "Lucida Console", Monaco, monospace;
+  display: none; /* Hide the table initially */
+}
+
+.formal-alliance-table th, .ally-enemy-table td {
+  padding: 3px;
+  text-align: left;
+  white-space: nowrap; /* Prevent line breaks */
+}
+
+.formal-alliance-table .internal-coincidence {
+  text-align: right;
+}
+
+.toggle-formal-alliance-button {
+  position: absolute;
+  top: 300px; /* Adjust as necessary to be below the expandTableButton */
+  left: 30px;
+  background-color: #fff;
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
+  font-size: 18px;
+  z-index: 110;
+}
+
+.toggle-formal-alliance-button img {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+}
+
+.alliance-button {
+  background: none;
+  border: none;
+  color: black;
+  font-size: inherit;
+}
+
+
+
+
+.country:hover {
+  fill: orange;
+}
+
+/* Styling for parameter controls container */
+.parameterControls {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+/* Styling for the parameter box inside the parameter controls */
+.parameterBox {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Additional styling for the slider */
+#edgeWeightSlider {
+  width: 200px;
+}
+
+/* Additional styling for the value span */
+#edgeWeightValue {
+  margin-left: 10px;
+}
+
+#backToLandingPageBtn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: grey;
+  border: none;
+  cursor: pointer;
+  z-index: 1000; /* Make sure it stays on top */
+  padding: 5px;
+}
+
+#backToLandingPageBtn img {
+  width: 100%;
+  height: 100%;
+}
+
+#backToLandingPageBtn:hover {
+  background-color: #444444;
+}
+
+.slider-wrapper {
+    width: 100%; /* Make sure the wrapper takes the full width */
+    text-align: center;
+    margin: 20px 0;
+}
+
+.slider-container {
+    width: 80%; /* Set the slider width to 80% of the screen */
+    margin: 0 auto; /* Center the slider within the container */
+}
+
+.subject-btn {
+  background-color: grey; /* Dark grey background */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+  text-align: center;
+  flex: 1;
+  max-width: 200px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 16px;
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.subject-btn:not(:last-child) {
+  margin-right: 10px; /* Space between buttons */
+}
+
+.subject-btn.active {
+  background-color: black; /* Active button background */
+  color: white; /* Ensure text is visible */
+}
+
+.subject-btn:not(.active):hover {
+  background-color: #444444; /* Darker background on hover */
+}
+
+/* Specific styles for #runBtn */
+#runBtn {
+  background-color: #007BFF; /* Blue background for Run button */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+  text-align: center;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 16px;
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease;
+  /* Add any additional specific styles for #runBtn here */
+}
+
+#runBtn:hover {
+  background-color: #0056b3; /* Darker blue for hover effect */
+}
+
+#loadingSpinner {
+  display: none; /* Initially hidden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: beige;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it's on top */
+}
+
+#loadingSpinner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('buttonSVGs/UN.svg'); /* Update with the correct path */
+  background-repeat: no-repeat;
+  background-position: center; /* Center the logo */
+  background-size: 40%; /* Adjust size as needed */
+  opacity: 0.1; /* Adjust the opacity to make it barely visible */
+  pointer-events: none; /* Allow clicks to pass through */
+}
+
+.spinner {
+  border: 4px solid black;
+  border-radius: 50%;
+  border-top: 4px solid orange;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
