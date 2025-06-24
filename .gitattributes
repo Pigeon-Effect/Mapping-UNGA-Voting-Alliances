@@ -1,0 +1,6 @@
+docs/* linguist-documentation=false
+docs/*.py linguist-language=Python
+docs/*.js linguist-language=JavaScript
+docs/*.html linguist-language=HTML
+docs/*.css linguist-language=CSS
+*.csv linguist-language=CSV
