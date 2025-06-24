@@ -1,11 +1,7 @@
-# Ensure files in docs/ are analyzed for language stats
-docs/* linguist-documentation=false
-
-# Explicitly assign languages to file types in docs/
-docs/**/*.py linguist-language=Python
+docs/** linguist-documentation=false
 docs/**/*.js linguist-language=JavaScript
 docs/**/*.html linguist-language=HTML
 docs/**/*.css linguist-language=CSS
-
-# Assign language to CSV files anywhere
+docs/**/*.py linguist-language=Python
 *.csv linguist-language=CSV
+docs/static/** linguist-vendored=false linguist-generated=false
